@@ -37,5 +37,10 @@ namespace Hudl.Mjolnir.Tests.Helper
         {
             get { return "always-successful"; }
         }
+
+        public void Dispose()
+        {
+            // No-op.
+        }
     }
 }

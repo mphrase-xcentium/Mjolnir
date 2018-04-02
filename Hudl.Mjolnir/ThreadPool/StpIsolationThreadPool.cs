@@ -135,5 +135,25 @@ namespace Hudl.Mjolnir.ThreadPool
         {
             _pool.MaxQueueLength = queueLength;
         }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private bool _disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                _pool?.Dispose();
+                _statsTimer?.Dispose();
+                _metricsTimer?.Dispose();
+            }
+            _disposed = true;
+        }
     }
 }

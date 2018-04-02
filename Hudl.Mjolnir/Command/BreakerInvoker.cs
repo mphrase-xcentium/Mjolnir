@@ -9,7 +9,7 @@ namespace Hudl.Mjolnir.Command
     /// <summary>
     /// Executes a command on a circuit breaker.
     /// </summary>
-    internal interface IBreakerInvoker
+    internal interface IBreakerInvoker : IDisposable
     {
         Task<TResult> ExecuteWithBreakerAsync<TResult>(AsyncCommand<TResult> command, CancellationToken ct);
         TResult ExecuteWithBreaker<TResult>(SyncCommand<TResult> command, CancellationToken ct);
@@ -139,6 +139,16 @@ namespace Hudl.Mjolnir.Command
             }
 
             return result;
+        }
+        private bool _disposed = false;
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _context?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

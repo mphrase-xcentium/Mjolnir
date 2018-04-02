@@ -1,8 +1,9 @@
-﻿using Hudl.Mjolnir.Metrics;
+﻿using System;
+using Hudl.Mjolnir.Metrics;
 
 namespace Hudl.Mjolnir.Breaker
 {
-    internal interface ICircuitBreaker
+    internal interface ICircuitBreaker : IDisposable
     {
         bool IsAllowing();
         void MarkSuccess(long elapsedMillis);

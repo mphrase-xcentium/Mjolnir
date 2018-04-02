@@ -1,6 +1,7 @@
-﻿namespace Hudl.Mjolnir.ThreadPool
+﻿using System;
+namespace Hudl.Mjolnir.ThreadPool
 {
-    internal interface IIsolationSemaphore
+    internal interface IIsolationSemaphore : IDisposable
     {
         bool TryEnter();
         void Release();

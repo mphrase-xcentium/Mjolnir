@@ -13,5 +13,10 @@ namespace Hudl.Mjolnir.Tests.Helper
         {
             // No-op.
         }
+
+        public void Dispose()
+        {
+            // No-op
+        }
     }
 }

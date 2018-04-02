@@ -10,11 +10,12 @@ using Hudl.Mjolnir.ThreadPool;
 using Hudl.Mjolnir.Util;
 using Hudl.Mjolnir.Bulkhead;
 using System.Threading;
+using Castle.Core;
 using log4net;
 
 namespace Hudl.Mjolnir.Command
 {
-    internal interface ICommandContext
+    internal interface ICommandContext : IDisposable
     {
         IStats Stats { get; set; }
         IMetricEvents MetricEvents { get; set; }
@@ -220,7 +221,7 @@ namespace Hudl.Mjolnir.Command
         // change events. We should never destroy the holder once it's been created - we may
         // replace its internal members, but the holder should remain for the lifetime of the
         // app to ensure consistent concurrency.
-        private class SemaphoreBulkheadHolder
+        private class SemaphoreBulkheadHolder : IDisposable
         {
             // Note: changing the default value at runtime won't trigger a rebuild of the
             // semaphores; that will require an app restart.
@@ -282,6 +283,47 @@ namespace Hudl.Mjolnir.Command
                     _metricEvents.BulkheadConfigGauge(_bulkhead.Name, "semaphore", _config.Value);
                 }, ConfigGaugeIntervalMillis);
             }
+            private bool _disposed = false;
+            public void Dispose()
+            {
+                if (_disposed)
+                {
+                    return;
+                }
+                _timer?.Dispose();
+                _disposed = true;
+                GC.SuppressFinalize(this);
+            }
+        }
+        private bool _disposed = false;
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _bulkheads?.Values.ForEach(bh =>
+            {
+                if (bh.IsValueCreated)
+                {
+                    bh.Value.Dispose();
+                }
+            });
+            _fallbackSemaphores?.Values.ForEach(fbs =>
+            {
+                if (fbs.IsValueCreated)
+                {
+                    fbs.Value.Dispose();
+                }
+            });
+            _pools?.Values.ForEach(p =>
+            {
+                if (p.IsValueCreated)
+                {
+                    p.Value.Dispose();
+                }
+            });
+            GC.SuppressFinalize(this);
         }
     }
     

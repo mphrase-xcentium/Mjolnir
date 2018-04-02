@@ -1,4 +1,5 @@
-﻿namespace Hudl.Mjolnir.ThreadPool
+﻿using System;
+namespace Hudl.Mjolnir.ThreadPool
 {
     /// <summary>
     /// A thread pool whose purposes is to isolate a group of operations from the rest of the system.
@@ -13,7 +14,7 @@
     /// (i.e. threads) that could instead be used for operations that aren't in the group and are
     /// successfully completing.
     /// </summary>
-    internal interface IIsolationThreadPool
+    internal interface IIsolationThreadPool : IDisposable
     {
         void Start();
 

@@ -17,6 +17,11 @@ namespace Hudl.Mjolnir.Tests.Helper
         }
 
         public string Name { get { return "always-successful"; } }
+
+        public void Dispose()
+        {
+            // No-op
+        }
     }
 
     internal class PassThroughWorkItem<TResult> : IWorkItem<TResult>

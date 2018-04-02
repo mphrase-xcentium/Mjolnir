@@ -275,6 +275,25 @@ namespace Hudl.Mjolnir.Breaker
             Fixed,
             Tripped,
         }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private bool _disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                _statsTimer?.Dispose();
+                _metricsTimer?.Dispose();
+            }
+            _disposed = true;
+        }
     }
 
     internal class FailurePercentageCircuitBreakerProperties

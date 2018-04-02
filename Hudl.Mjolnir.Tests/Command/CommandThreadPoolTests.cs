@@ -100,6 +100,11 @@ namespace Hudl.Mjolnir.Tests.Command
             }
 
             public string Name { get { return "rejecting"; } }
+
+            public void Dispose()
+            {
+                // No-op
+            }
         }
     }
 }

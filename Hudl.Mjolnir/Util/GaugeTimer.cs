@@ -1,9 +1,10 @@
-﻿using System.Timers;
+﻿using System;
+using System.Timers;
 using Hudl.Config;
 
 namespace Hudl.Mjolnir.Util
 {
-    internal class GaugeTimer
+    internal class GaugeTimer : IDisposable
     {
         // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
         // Don't let these get garbage collected.
@@ -37,6 +38,24 @@ namespace Hudl.Mjolnir.Util
                 return;
             }
             _timer.Interval = millis;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private bool _disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                _timer?.Dispose();
+            }
+            _disposed = true;
         }
     }
 }

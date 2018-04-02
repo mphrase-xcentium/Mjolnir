@@ -19,7 +19,8 @@ namespace Hudl.Mjolnir.ThreadPool
         private readonly GaugeTimer _timer;
         // ReSharper restore NotAccessedField.Local
 
-        internal SemaphoreSlimIsolationSemaphore(GroupKey key, IConfigurableValue<int> maxConcurrent, IStats stats, IConfigurableValue<long> gaugeIntervalMillisOverride = null)
+        internal SemaphoreSlimIsolationSemaphore(GroupKey key, IConfigurableValue<int> maxConcurrent, IStats stats,
+            IConfigurableValue<long> gaugeIntervalMillisOverride = null)
         {
             _key = key;
 
@@ -54,6 +55,18 @@ namespace Hudl.Mjolnir.ThreadPool
         public void Release()
         {
             _semaphore.Release();
+        }
+        private bool _disposed = false;
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            _semaphore?.Dispose();
+            _timer?.Dispose();
+            _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }
