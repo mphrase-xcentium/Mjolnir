@@ -44,10 +44,6 @@
     <Reference Include="Hudl.Config">
       <HintPath>..\MjolnirLib\Hudl.Config.dll</HintPath>
     </Reference>
-    <Reference Include="Hudl.Mjolnir.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Hudl.Mjolnir.Attributes.1.0.0\lib\net45\Hudl.Mjolnir.Attributes.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -118,7 +114,12 @@
     <None Include="Hudl.Mjolnir.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Hudl.Mjolnir.Attributes\Hudl.Mjolnir.Attributes.csproj">
+      <Project>{35789458-34e2-42d2-9fc2-043c56c3d011}</Project>
+      <Name>Hudl.Mjolnir.Attributes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
